@@ -12,7 +12,7 @@ import net.iknode.lib.*;
  * @since 1.0
  */
 public final class JClient {
-	
+	// this two constants must be set using your iknode account values.
 	private static String USER_ID = "";
 	private static String API_KEY = "";
 	/**
