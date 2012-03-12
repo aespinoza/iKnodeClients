@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'net/http'
+require 'net/https'
 def main()
   service_url = ""
   api_key = ""
