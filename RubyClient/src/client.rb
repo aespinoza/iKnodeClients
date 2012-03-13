@@ -31,7 +31,7 @@ def main()
   
   #validate ARGV
   if ARGV.length == 0
-    abort "Usage: ApplicationName:MethodName [--param_name=para_value]..."
+    abort "Usage: ./client.rb ApplicationName:MethodName [--param_name=para_value]..."
   end
 
   #prepare request
@@ -41,8 +41,12 @@ def main()
   request = Net::HTTP::Post.new(uri.path, initheader = {"Content-Type" => 
                                   "application/json"})
   request.body = body
-  http = Net::HTTP.new(uri.host, uri.port) 
-  http.use_ssl = uri.scheme == 'https' 
+  http = Net::HTTP.new(uri.host, uri.port)
+  if uri.scheme == 'https'
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    http.ca_file = "cacert.pem"
+  end 
   response = http.start do |http|
     http.request(request)
   end
