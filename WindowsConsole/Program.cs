@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -36,7 +37,7 @@ namespace iKnodeConsole
                 DateTime executionStart = DateTime.Now;
                 Console.WriteLine(Execute(command));
                 Console.WriteLine("");
-			    Console.WriteLine(">> Total:" + DateTime.Now.Subtract(executionStart).Milliseconds + "ms");
+                Console.WriteLine(">> Total:" + DateTime.Now.Subtract(executionStart).Milliseconds + "ms");
 
             } catch(Exception ex) {
                 Console.WriteLine(ex.Message);
@@ -86,17 +87,21 @@ namespace iKnodeConsole
         /// </summary>
         /// <param name="command">Command to Execute.</param>
         private static string Execute(string command)
-        {       
-            string iKnodeSvcUrl = String.Format("{0}/execute", ConfigurationManager.AppSettings["iKnodeServiceUrl"]);
-
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(iKnodeSvcUrl);
-            request.Method = "POST";
-            request.ContentType = "application/json";
+        {
+            string[] appDef = GetAppDefinition(command);
+            string iKnodeSvcUrl = String.Format("{0}/execute/{1}/{2}", ConfigurationManager.AppSettings["iKnodeServiceUrl"],
+                                                appDef[0], appDef[1]);
 
             string userId = ConfigurationManager.AppSettings["userId"];
             string apiKey = ConfigurationManager.AppSettings["apiKey"];
 
-            string requestBody = "{\"userId\":\""+userId+"\",\"apiKey\":\""+apiKey+"\",\"command\":\""+command+"\"}";
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(iKnodeSvcUrl);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Headers.Add("iKnode-UserId", userId);
+            request.Headers.Add("iKnode-ApiKey", apiKey);
+
+            string requestBody = "{ " + String.Format("\"parameters\": \"{{ {0} }}\"", appDef[2]) + " }";
 
             byte[] data = Encoding.UTF8.GetBytes(requestBody);
             using(Stream dataStream = request.GetRequestStream()) {
@@ -116,19 +121,89 @@ namespace iKnodeConsole
         }
 
         /// <summary>
+        /// Gets the application definition.
+        /// </summary>
+        /// <remarks>
+        /// Extracts the applicatino and the its task, also the arguments list. This is splited
+        /// into the app name, app task and a transformed list of arguments.
+        /// </remarks>
+        /// <param name="command">Full issued command</param>
+        /// <returns>Array containing the command definition</returns>
+        private static string[] GetAppDefinition(string command)
+        {
+            string arguments;
+            string[] appDef = command.Split(':');
+
+            string applicationName = appDef[0];
+            string applicationTask = appDef[1].TrimEnd().IndexOf(" ") >= 0
+                ? appDef[1].Substring(0, appDef[1].IndexOf(" "))
+                : appDef[1].TrimStart().TrimEnd();
+
+            if (appDef[1].TrimEnd().IndexOf(" ") >= 0) {
+                arguments = appDef[1].Substring(appDef[1].IndexOf(" "), appDef[1].Length - appDef[1].IndexOf(" "));
+            } else {
+                arguments = String.Empty;
+            }
+
+            return new string[] {
+                applicationName,
+                applicationTask,
+                AdjustArgumentsSyntax(arguments.Trim())
+            };
+        }
+
+        /// <summary>
+        /// Adjusts the arguments sintax.
+        /// </summary>
+        /// <remarks>
+        /// Removes the leading '--' and transforms the parameter and its value
+        /// to a property-value representation, this is applied to all parameters.
+        /// </remarks>
+        /// <param name="arguments">Arguments string</param>
+        /// <returns>New arguments representation</returns>
+        private static string AdjustArgumentsSyntax(string arguments)
+        {
+            StringBuilder newArgumentsBuffer;
+
+            if (String.IsNullOrEmpty(arguments)) {
+                newArgumentsBuffer = new StringBuilder(String.Empty);
+            } else {
+                newArgumentsBuffer = new StringBuilder();
+
+                string[] argumentsCollection = arguments.Split(' ');
+                foreach (string arg in argumentsCollection) {
+                    string[] argParts = arg.Split('=');
+
+                    Console.Write(argParts[0]);
+
+                    newArgumentsBuffer.Append(String.Format("{0}:", argParts[0].Replace("--", "")));
+                    newArgumentsBuffer.Append(String.Format("'{0}',", argParts[1]));
+                }
+            }
+
+            string newArguments = newArgumentsBuffer.ToString();
+            
+            if (newArguments.LastIndexOf(",") >= 0) {
+                newArguments.Remove(newArguments.LastIndexOf(","), 1);
+            }
+
+            return newArguments;
+        }
+
+        /// <summary>
         /// Returns the Response Header.
         /// </summary>
         /// <param name="response">Http Response.</param>
         /// <returns>Response Header.</returns>
         private static string GetResponseHeader(HttpWebResponse response)
         {
-			string result = "Status code: " + (int)response.StatusCode + " " + response.StatusCode + "\r\n";
+            string result = "Status code: " + (int)response.StatusCode + " " + response.StatusCode + "\r\n";
 
-			foreach (string key in response.Headers.Keys) {
-				result += string.Format("{0}: {1} \r\n", key, response.Headers[key]);
-			}
+            foreach (string key in response.Headers.Keys) {
+                result += string.Format("{0}: {1} \r\n", key, response.Headers[key]);
+            }
 
-			result += "\r\n";
+            result += "\r\n";
 
             return result;
         }
@@ -139,9 +214,9 @@ namespace iKnodeConsole
         /// <param name="response">Http Response.</param>
         /// <returns>Response Text.</returns>
         private static string ConvertResponseToString(HttpWebResponse response)
-		{
-			string result = new StreamReader(response.GetResponseStream()).ReadToEnd();
-			return result.Replace("<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">", "").Replace("</string>", "");
-		}
+        {
+            string result = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            return result.Replace("<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">", "").Replace("</string>", "");
+        }
     }
 }
