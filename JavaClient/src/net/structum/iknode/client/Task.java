@@ -1,4 +1,4 @@
-package net.structum.iknode.client.android;
+package net.structum.iknode.client;
 
 /**
  * <p>
