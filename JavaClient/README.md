@@ -1,4 +1,6 @@
-#JClient# would be the class to use to call an iKnode App, e.g.
+#JClient
+
+would be the class to use to call an iKnode App, e.g.
 
 the Task expression way:
 JClient.execute("App:Method", "args");
