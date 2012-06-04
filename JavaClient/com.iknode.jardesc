@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="iKnode Utilities Mobile Test/lib/com.iknode.client.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/iKnode Java Client/com.iknode.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="/iKnode Java Client/manifest.mf" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <file path="/iKnode Java Client/manifest.mf"/>
+        <file path="/iKnode Java Client/.project"/>
+        <file path="/iKnode Java Client/.classpath"/>
+        <javaElement handleIdentifier="=iKnode Java Client/src"/>
+        <file path="/iKnode Java Client/com.iknode.jardesc"/>
+    </selectedElements>
+</jardesc>
