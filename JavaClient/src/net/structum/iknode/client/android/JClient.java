@@ -50,6 +50,6 @@ public final class JClient {
 		User u = UserFactory.Create(USER_ID, API_KEY);
 		TaskExecutionContext execContext = t.createExecutionContextFor(u);
 		
-		return execContext.execute();
+		return execContext.execute(appArgs);
 	}
 }

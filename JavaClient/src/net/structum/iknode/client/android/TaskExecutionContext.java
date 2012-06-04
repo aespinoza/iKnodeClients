@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -111,6 +110,24 @@ final class TaskExecutionContext {
 
 	/**
 	 * <p>
+	 * Performs the execution of the {@link Task} with no arguments
+	 * </p>
+	 * 
+	 * <p>
+	 * Uses {@link #execute(String)} to perform the actual request.
+	 * </p>
+	 * 
+	 * @see #execute(String)
+	 * 
+	 * @return Execution output.
+	 * @since 0.1
+	 */
+	public String execute() {
+		return this.execute("");
+	}
+
+	/**
+	 * <p>
 	 * Performs the execution of the {@link Task}.
 	 * </p>
 	 * 
@@ -120,17 +137,19 @@ final class TaskExecutionContext {
 	 * 
 	 * @see #getConnection()
 	 * @see #getRequestBody()
+
+	 * @param arguments The iKnode Application arguments.
 	 * @return Execution output.
 	 * @since 0.1
 	 */
-	public String execute() {
+	public String execute(String arguments) {
 		String result;
 
 		try {
 			URLConnection connection = this.getConnection();
 			OutputStream os = connection.getOutputStream();
 
-			byte[] requestBodyBytes = this.getRequestBody().getBytes();
+			byte[] requestBodyBytes = this.getRequestBody(arguments).getBytes();
 			os.write(requestBodyBytes, 0, requestBodyBytes.length);
 			os.flush();
 
@@ -184,11 +203,12 @@ final class TaskExecutionContext {
 	/**
 	 * Builds and returns the request body.
 	 * 
+	 * @param appArguments The iKnode Application arguments.
 	 * @return The Request body.
 	 * @since 0.1
 	 */
-	private final String getRequestBody() {
-		return "{\"parameters\":\"\"}";
+	private final String getRequestBody(String appArguments) {
+		return String.format("{\"parameters\":\"%s\"}", appArguments);
 	}
 
 	/**
@@ -210,8 +230,8 @@ final class TaskExecutionContext {
 	 * </p>
 	 * 
 	 * <p>
-	 * Removes some response tags from the actual response text and also
-	 * leading and trailing whitespaces.
+	 * Removes some response tags from the actual response text and also leading
+	 * and trailing whitespaces.
 	 * </p>
 	 * 
 	 * @param response
