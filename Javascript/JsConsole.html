@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+function execute(appName, methodName, params)
+{
+	var url = "https://api.iknode.net/Applications/execute/"+appName+"/"+methodName;
+	var body= '{ "parametrs" : "'+params+'" }';
+
+	var client = new XMLHttpRequest();
+
+	if (window.XMLHttpRequest) {
+		client = new XMLHttpRequest();
+	} else {
+		client = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	
+	client.onreadystatechange=function() {
+		if (client.readyState == 4 && client.status == 200) {
+			document.getElementById("resultDiv").innerHTML = xmlhttp.responseText;
+		}
+	};
+
+	client.open("POST", url, false);
+	client.setRequestHeader("Content-Type", "application/json");
+	client.setRequestHeader("iKnode-UserId", "");
+	client.setRequestHeader("iKnode-ApiKey", "");
+
+	client.send(body);
+}
+</script>
+</head>
+<body>
+
+<h2>iKnode Console.</h2>
+<button type="button" onclick="execute("","","")">Request data</button>
+<div id="resultDiv"></div>
+
+</body>
+</html>
