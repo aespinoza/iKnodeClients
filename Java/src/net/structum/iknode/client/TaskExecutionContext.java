@@ -137,8 +137,9 @@ final class TaskExecutionContext {
 	 * 
 	 * @see #getConnection()
 	 * @see #getRequestBody()
-
-	 * @param arguments The iKnode Application arguments.
+	 * 
+	 * @param arguments
+	 *            The iKnode Application arguments.
 	 * @return Execution output.
 	 * @since 0.1
 	 */
@@ -162,10 +163,9 @@ final class TaskExecutionContext {
 			while ((line = buffr.readLine()) != null) {
 				executionOutput.append(line);
 			}
-
 			result = executionOutput.toString();
 		} catch (Exception e) {
-			result = "Error";
+			result = "";
 		}
 
 		return this.sanitizeResponse(result);
@@ -203,7 +203,8 @@ final class TaskExecutionContext {
 	/**
 	 * Builds and returns the request body.
 	 * 
-	 * @param appArguments The iKnode Application arguments.
+	 * @param appArguments
+	 *            The iKnode Application arguments.
 	 * @return The Request body.
 	 * @since 0.1
 	 */
@@ -240,9 +241,21 @@ final class TaskExecutionContext {
 	 * @since 0.1
 	 */
 	private final String sanitizeResponse(String response) {
+		String sanitized;
+		
+		if(response == "") {
+			sanitized = response; 
+		} else {
+			sanitized = response.replaceAll("\\\\", "");
+			sanitized = sanitized.substring(1, sanitized.length() - 1);
+		}
+
+		return sanitized;
+
+		/*
 		return response
 				.replace(
 						"<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">",
-						"").replace("</string>", "").trim();
+						"").replace("</string>", "").replaceAll("\\\\", "").trim().substring(1, response.length() - 1);*/
 	}
 }
