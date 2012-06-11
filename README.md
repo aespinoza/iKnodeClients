@@ -1,4 +1,4 @@
-_iKnode Clients_
+__iKnode Clients__
 
 Library & Client for iKnode. They can attached to your project or used from a command line to call iKnode Applications.
 
