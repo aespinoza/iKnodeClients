@@ -251,11 +251,5 @@ final class TaskExecutionContext {
 		}
 
 		return sanitized;
-
-		/*
-		return response
-				.replace(
-						"<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">",
-						"").replace("</string>", "").replaceAll("\\\\", "").trim().substring(1, response.length() - 1);*/
 	}
 }
