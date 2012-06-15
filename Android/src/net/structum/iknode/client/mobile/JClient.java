@@ -11,12 +11,12 @@ public final class JClient {
 	/**
 	 * 
 	 */
-	private static final String USER_ID = "73c1ccf9-13e1-4428-b5fc-4a8388d3552a";
+	private static final String USER_ID = "";
 	
 	/**
 	 * 
 	 */
-	private static final String API_KEY = "e75aed47-f8f9-4df6-b409-707d7b0f7820";
+	private static final String API_KEY = "";
 	
 	/**
 	 * 
