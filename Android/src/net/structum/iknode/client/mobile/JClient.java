@@ -8,15 +8,18 @@ package net.structum.iknode.client.mobile;
  * @version 0.1
  */
 public final class JClient {
-	/**
-	 * 
-	 */
-	private static final String USER_ID = "";
+	
+	private String _userId, _apiKey;
 	
 	/**
 	 * 
+	 * @param userId
+	 * @param apiKey
 	 */
-	private static final String API_KEY = "";
+	public JClient(String userId, String apiKey) {
+		this._userId = userId;
+		this._apiKey = apiKey;
+	}
 	
 	/**
 	 * 
@@ -24,7 +27,7 @@ public final class JClient {
 	 * @param appArgs
 	 * @return
 	 */
-	public static String execute(String task, String appArgs) {
+	public String execute(String task, String appArgs) {
 		String[] taskParts = task.split(":");
 		return execute(taskParts[0], taskParts[1], appArgs);
 	}
@@ -36,7 +39,7 @@ public final class JClient {
 	 * @param appArgs
 	 * @return
 	 */
-	public static String execute(String application, String method, String appArgs) {
+	public String execute(String application, String method, String appArgs) {
 		return execute(TaskFactory.Create(application, method), appArgs);
 	}
 		
@@ -46,8 +49,8 @@ public final class JClient {
 	 * @param appArgs
 	 * @return
 	 */
-	public static String execute(Task t, String appArgs) {
-		User u = UserFactory.Create(USER_ID, API_KEY);
+	public String execute(Task t, String appArgs) {
+		User u = UserFactory.Create(this._userId, this._apiKey);
 		TaskExecutionContext execContext = t.createExecutionContextFor(u);
 		
 		return execContext.execute(appArgs);
