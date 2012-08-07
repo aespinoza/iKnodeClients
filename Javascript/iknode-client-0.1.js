@@ -12,8 +12,8 @@ var iknode = iknode || {};
  * @constructor
  * @param {object} config Contains the client configuration.
  */
-iknode.Client = function(config) {
-    if(!(config.hasOwnProperty('userId')
+iknode.Client = function (config) {
+    if (!(config.hasOwnProperty('userId')
          && config.hasOwnProperty('apiKey'))) {
         throw "It is required to provide the User Id and Api Key";
     }
@@ -33,8 +33,8 @@ iknode.Client.EMPTY_PARAMS = "{\"parameters\":\"{}\"}";
  *
  * @param {object} config Execution configuration object.
  */
-iknode.Client.prototype.execAndForget = function(config) {
-    if(!(config.hasOwnProperty('task')
+iknode.Client.prototype.execAndForget = function (config) {
+    if (!(config.hasOwnProperty('task')
          && config.hasOwnProperty('params'))) {
         throw "It is required to provide the Task to execute and its parameters";
     }
@@ -47,8 +47,8 @@ iknode.Client.prototype.execAndForget = function(config) {
  *
  * @param {object} config Execution configuration object.
  */
-iknode.Client.prototype.exec = function(config) {
-    if(!(config.hasOwnProperty('task')
+iknode.Client.prototype.exec = function (config) {
+    if (!(config.hasOwnProperty('task')
          && config.hasOwnProperty('params'))) {
         throw "It is required to provide the Task to execute and its parameters";
     }
@@ -71,10 +71,10 @@ iknode.Client.prototype._requestUri = "https://api.iknode.com/Applications/execu
  * @param {string} task Task expression.
  * @return {object} Object containing the task information.
  */
-iknode.Client.prototype._getTaskInfo = function(task) {
+iknode.Client.prototype._getTaskInfo = function (task) {
     var taskParts = task.split(":");
 
-    if(taskParts.length !== 2) {
+    if (taskParts.length !== 2) {
         throw "Malformed task definition found, task should come as [Application]:[Method]";
     }
 
@@ -92,7 +92,7 @@ iknode.Client.prototype._getTaskInfo = function(task) {
  * @param {object} taskInfo Object containing the Task information.
  * @return {XMLHttpRequest} request object.
  */
-iknode.Client.prototype._buildRequest = function(taskInfo) {
+iknode.Client.prototype._buildRequest = function (taskInfo) {
     var xhr = window.XMLHttpRequest
         ? new XMLHttpRequest()
         : new ActiveXObject("Microsoft.XMLHTTP");
@@ -113,10 +113,10 @@ iknode.Client.prototype._buildRequest = function(taskInfo) {
  * @param {string} params Request parameters.
  * @param {function} callback Callback function to call.
  */
-iknode.Client.prototype._executeRequest = function(r, params, callback) {
-    if(callback) {
-        r.onreadystatechange = function() {
-            if(r.readyState === 4 && r.status === 200) {
+iknode.Client.prototype._executeRequest = function (r, params, callback) {
+    if (callback) {
+        r.onreadystatechange = function () {
+            if (r.readyState === 4 && r.status === 200) {
                 callback(r.responseText);
             }
         };
