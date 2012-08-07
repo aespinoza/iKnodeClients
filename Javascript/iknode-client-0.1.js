@@ -1,5 +1,5 @@
 /**
- * Defines the iknode namespace
+ * Defines the iknode namespace.
  */
 var iknode = iknode || {};
 
@@ -24,7 +24,7 @@ iknode.Client = function(config) {
 };
 
 /**
- * Defines a constant for blank parameters.
+ * Defines a static field for blank parameters.
  */
 iknode.Client.EMPTY_PARAMS = "{\"parameters\":\"{}\"}";
 
@@ -57,6 +57,12 @@ iknode.Client.prototype.exec = function(config) {
 	this._executeRequest(this._buildRequest(this._getTaskInfo(config.task)), config.params, callback);
 };
 
+/**
+ * Defines the REST API request Uri.
+ *
+ * @private
+ */
+iknode.Client.prototype._requestUri = "https://api.iknode.com/Applications/execute/";
 
 /**
  * Gets the task information from a Task expression.
@@ -91,7 +97,7 @@ iknode.Client.prototype._buildRequest = function(taskInfo) {
 		? new XMLHttpRequest()
 		: new ActiveXObject("Microsoft.XMLHTTP");
 
-	xhr.open("POST", "https://api.iknode.com/Applications/execute/" + taskInfo.application +"/" + taskInfo.method, true);
+	xhr.open("POST", this._requestUri + taskInfo.application +"/" + taskInfo.method, true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.setRequestHeader("iKnode-UserId", this.userId);
 	xhr.setRequestHeader("iKnode-ApiKey", this.apiKey);

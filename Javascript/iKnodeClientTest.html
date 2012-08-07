@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>iknode-client-0.1.js test</title>
+	<script language="javascript" type="application/javascript" src="iknode-client-0.1.js"></script>
+	<script language="javascript" type="text/javascript">
+	  function generatePassword() {
+	  var client = new iknode.Client({userId: '', apiKey:''});
+	  client.exec({task:'PasswdGenerator:Generate', params: iknode.Client.EMPTY_PARAMS, callback: function(result) { document.getElementById('response').value = result.replace(/\"/g, "");}});
+	  }
+	</script>
+  </head>
+  <body>
+	Testing iKnode Client - Calling PasswdGenerator:Generate...<br />
+	<textarea id="response"></textarea><br />
+	<button onclick="generatePassword()">Generate...</button>
+	<p>
+	  <pre>
+		function generatePassword() {
+		    var client = new iknode.Client({userId: '', apiKey:''});
+		    client.exec({task:'PasswdGenerator:Generate'
+			             params: iknode.Client.EMPTY_PARAMS,
+						 callback: function(result) {
+						     document.getElementById('response').value = result.replace(/\"/g, "");
+						}});
+		}
+
+	  </pre>
+	</p>
+  </body>
+</html>
