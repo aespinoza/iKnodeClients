@@ -13,13 +13,13 @@ var iknode = iknode || {};
  * @param {object} config Contains the client configuration.
  */
 iknode.Client = function(config) {
-	if(!(config.hasOwnProperty('userId')
-		 && config.hasOwnProperty('apiKey'))) {
-		throw "It is required to provide the User Id and Api Key";
-	}
+    if(!(config.hasOwnProperty('userId')
+         && config.hasOwnProperty('apiKey'))) {
+        throw "It is required to provide the User Id and Api Key";
+    }
 
-	this.userId = config.userId;
-	this.apiKey = config.apiKey;
+    this.userId = config.userId;
+    this.apiKey = config.apiKey;
 
 };
 
@@ -34,12 +34,12 @@ iknode.Client.EMPTY_PARAMS = "{\"parameters\":\"{}\"}";
  * @param {object} config Execution configuration object.
  */
 iknode.Client.prototype.execAndForget = function(config) {
-	if(!(config.hasOwnProperty('task')
-		 && config.hasOwnProperty('params'))) {
-		throw "It is required to provide the Task to execute and its parameters";
-	}
+    if(!(config.hasOwnProperty('task')
+         && config.hasOwnProperty('params'))) {
+        throw "It is required to provide the Task to execute and its parameters";
+    }
 
-	this._executeRequest(this._buildRequest(this._getTaskInfo(config.task)), config.params);
+    this._executeRequest(this._buildRequest(this._getTaskInfo(config.task)), config.params);
 };
 
 /**
@@ -48,13 +48,13 @@ iknode.Client.prototype.execAndForget = function(config) {
  * @param {object} config Execution configuration object.
  */
 iknode.Client.prototype.exec = function(config) {
-	if(!(config.hasOwnProperty('task')
-		 && config.hasOwnProperty('params'))) {
-		throw "It is required to provide the Task to execute and its parameters";
-	}
+    if(!(config.hasOwnProperty('task')
+         && config.hasOwnProperty('params'))) {
+        throw "It is required to provide the Task to execute and its parameters";
+    }
 
-	var callback = config.hasOwnProperty('callback') ? config.callback : null;
-	this._executeRequest(this._buildRequest(this._getTaskInfo(config.task)), config.params, callback);
+    var callback = config.hasOwnProperty('callback') ? config.callback : null;
+    this._executeRequest(this._buildRequest(this._getTaskInfo(config.task)), config.params, callback);
 };
 
 /**
@@ -72,16 +72,16 @@ iknode.Client.prototype._requestUri = "https://api.iknode.com/Applications/execu
  * @return {object} Object containing the task information.
  */
 iknode.Client.prototype._getTaskInfo = function(task) {
-	var taskParts = task.split(":");
+    var taskParts = task.split(":");
 
-	if(taskParts.length !== 2) {
-		throw "Malformed task definition found, task should come as [Application]:[Method]";
-	}
+    if(taskParts.length !== 2) {
+        throw "Malformed task definition found, task should come as [Application]:[Method]";
+    }
 
-	return {
-		application: taskParts[0],
-		method: taskParts[1]
-	};
+    return {
+        application: taskParts[0],
+        method: taskParts[1]
+    };
 };
 
 /**
@@ -93,16 +93,16 @@ iknode.Client.prototype._getTaskInfo = function(task) {
  * @return {XMLHttpRequest} request object.
  */
 iknode.Client.prototype._buildRequest = function(taskInfo) {
-	var xhr = window.XMLHttpRequest
-		? new XMLHttpRequest()
-		: new ActiveXObject("Microsoft.XMLHTTP");
+    var xhr = window.XMLHttpRequest
+        ? new XMLHttpRequest()
+        : new ActiveXObject("Microsoft.XMLHTTP");
 
-	xhr.open("POST", this._requestUri + taskInfo.application +"/" + taskInfo.method, true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.setRequestHeader("iKnode-UserId", this.userId);
-	xhr.setRequestHeader("iKnode-ApiKey", this.apiKey);
+    xhr.open("POST", this._requestUri + taskInfo.application +"/" + taskInfo.method, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("iKnode-UserId", this.userId);
+    xhr.setRequestHeader("iKnode-ApiKey", this.apiKey);
 
-	return xhr;
+    return xhr;
 };
 
 /**
@@ -114,13 +114,13 @@ iknode.Client.prototype._buildRequest = function(taskInfo) {
  * @param {function} callback Callback function to call.
  */
 iknode.Client.prototype._executeRequest = function(r, params, callback) {
-	if(callback) {
-		r.onreadystatechange = function() {
-			if(r.readyState === 4 && r.status === 200) {
-				callback(r.responseText);
-			}
-		};
-	}
+    if(callback) {
+        r.onreadystatechange = function() {
+            if(r.readyState === 4 && r.status === 200) {
+                callback(r.responseText);
+            }
+        };
+    }
 
-	r.send(params);
+    r.send(params);
 };
