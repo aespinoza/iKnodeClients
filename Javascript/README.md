@@ -8,8 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 This is a javascript library for calling iKnode application via iKnode's REST API:
 
-**iknode-client-0.1.js** is the uncompressed version of the library.
-**iknode-client-0.1.min.js** is the compressed version of the library, which is to be used in a PRODUCTION environment
-**LICENSE** is the library license
+* **iknode-client-0.1.js** is the uncompressed version of the library.
+* **iknode-client-0.1.min.js** is the compressed version of the library, which is to be used in a PRODUCTION environment
 
 _JsConsole.html_ and _iKnodeClientTest.html_ are just plain html pages made to test the library.
