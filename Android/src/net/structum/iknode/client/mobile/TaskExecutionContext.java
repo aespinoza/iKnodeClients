@@ -220,7 +220,7 @@ final class TaskExecutionContext {
 	 */
 	private final String getServiceUrl() {
 		return String.format(
-				"https://api.iknode.net/Applications/execute/%s/%s", this._task
+				"https://api.iknode.com/Applications/execute/%s/%s", this._task
 						.getApplication().getName(), this._task.getMethod()
 						.getName());
 	}
@@ -251,11 +251,5 @@ final class TaskExecutionContext {
 		}
 
 		return sanitized;
-
-		/*
-		return response
-				.replace(
-						"<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">",
-						"").replace("</string>", "").replaceAll("\\\\", "").trim().substring(1, response.length() - 1);*/
 	}
 }
