@@ -1,40 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script type="text/javascript">
-function execute(appName, methodName, params)
-{
-	var url = "https://api.iknode.net/Applications/execute/"+appName+"/"+methodName;
-	var body= '{ "parametrs" : "'+params+'" }';
+  <head>
+	<title>iKnode Console</title>
+	<script type="text/javascript" src="iknode-client-0.2.js"></script>
+	<script type="text/javascript">
 
-	var client = new XMLHttpRequest();
+	  function execute() {
+		  var client = new iKnode.Client({
+			  userId: '', 
+			  apiKey: ''
+		  });
 
-	if (window.XMLHttpRequest) {
-		client = new XMLHttpRequest();
-	} else {
-		client = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	
-	client.onreadystatechange=function() {
-		if (client.readyState == 4 && client.status == 200) {
-			document.getElementById("resultDiv").innerHTML = client.responseText;
-		}
-	};
-
-	client.open("POST", url, false);
-	client.setRequestHeader("Content-Type", "application/json");
-	client.setRequestHeader("iKnode-UserId", "");
-	client.setRequestHeader("iKnode-ApiKey", "");
-
-	client.send(body);
-}
+		  client.exec({
+			  task: document.getElementById('task').value, 
+			  callback: function(result) {
+				  document.getElementById('resultDiv').value = result.toString();
+			  }
+		  });
+	  }
 </script>
-</head>
-<body>
+  </head>
+  <body>
 
-<h2>iKnode Console.</h2>
-<button type="button" onclick='execute("","","")'>Request data</button>
-<div id="resultDiv"></div>
-
-</body>
+	<h2>iKnode Console.</h2>
+	Task: <input id="task" type="text" size="100"/>
+	<button type="button" onclick='execute()'>Request data</button><br/><br />
+	Result:<br />
+	<textarea id="resultDiv" rows="10" cols="100"></textarea><br />
+  </body>
 </html>
