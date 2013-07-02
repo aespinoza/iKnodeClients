@@ -1,3 +1,9 @@
+**This repository is out-dated. Please refer to the iKnodeSDK repository here** 
+[iKnodeSDK](https://github.com/Structum/iKnodeSdk)
+
+The repository remains for informational purposes.
+
+
 __iKnode Clients__
 
 Libraries & Clients for iKnode. They can attached to your project or used from a command line to call iKnode Applications.
